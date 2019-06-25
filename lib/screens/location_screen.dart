@@ -10,9 +10,10 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+  WeatherModel weather = WeatherModel();
   var temp;
   var Cityname;
-  var id;
+  var weatherIcon;
   @override
   void initState() {
     // TODO: implement initState
@@ -21,10 +22,13 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 
   void updateUI(dynamic weatherData) {
-    id = weatherData['weather'][0]['id'];
+    var condition = weatherData['weather'][0]['id'];
     temp = weatherData['main']['temp'];
     Cityname = weatherData['name'];
+    weatherIcon = weather.getWeatherIcon(condition);
+
     print(temp);
+    print(condition);
   }
 
   @override
@@ -73,7 +77,7 @@ class _LocationScreenState extends State<LocationScreen> {
                       style: kTempTextStyle,
                     ),
                     Text(
-                      '☀️',
+                      '$weatherIcon️',
                       style: kConditionTextStyle,
                     ),
                   ],
