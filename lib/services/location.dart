@@ -15,3 +15,6 @@ class Location {
     }
   }
 }
+//var id = jsonDecode(data)['weather'][0]['id'];
+//var temp = jsonDecode(data)['main']['temp'];
+//var name = jsonDecode(data)['name'];
