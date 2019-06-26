@@ -24,7 +24,9 @@ class _CityScreenState extends State<CityScreen> {
               Align(
                 alignment: Alignment.topLeft,
                 child: FlatButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   child: Icon(
                     Icons.arrow_back_ios,
                     size: 50.0,
@@ -33,7 +35,20 @@ class _CityScreenState extends State<CityScreen> {
               ),
               Container(
                 padding: EdgeInsets.all(20.0),
-                child: null,
+                child: TextField(
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    icon: Icon(
+                      Icons.location_city,
+                      color: Colors.white,
+                    ),
+                    hintText: 'Enter City Name',
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
               ),
               FlatButton(
                 onPressed: () {},
