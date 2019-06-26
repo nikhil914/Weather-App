@@ -23,14 +23,24 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 
   void updateUI(dynamic weatherData) {
-    var condition = weatherData['weather'][0]['id'];
-    temp = weatherData['main']['temp'];
-    Cityname = weatherData['name'];
-    weatherIcon = weather.getWeatherIcon(condition);
-    weatherText = weather.getMessage(temp);
-    print(temp);
-    print(condition);
-    print(weatherText);
+    setState(() {
+      if (weatherData == null) {
+        temp = 0;
+        weatherIcon = "Error";
+        weatherText = "Unable to get Weather data,Allow permission";
+        Cityname = "";
+        return;
+      }
+
+      var condition = weatherData['weather'][0]['id'];
+      temp = weatherData['main']['temp'];
+      Cityname = weatherData['name'];
+      weatherIcon = weather.getWeatherIcon(condition);
+      weatherText = weather.getMessage(temp);
+      print(temp);
+      print(condition);
+      print(weatherText);
+    });
   }
 
   @override
@@ -55,7 +65,11 @@ class _LocationScreenState extends State<LocationScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   FlatButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      var weatherdata = await weather.getlocationweather();
+                      updateUI(weatherdata);
+                      print('Clicked at updater current Location');
+                    },
                     child: Icon(
                       Icons.near_me,
                       size: 50.0,
