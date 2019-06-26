@@ -77,11 +77,21 @@ class _LocationScreenState extends State<LocationScreen> {
                     ),
                   ),
                   FlatButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return CityScreen();
-                      }));
+                    onPressed: () async {
+                      var typedname = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return CityScreen();
+                          },
+                        ),
+                      );
+                      print('Abc');
+                      print(typedname);
+                      if (typedname != null) {
+                        var weatherdata = await weather.cityweather(typedname);
+                        updateUI(weatherdata);
+                      }
                     },
                     child: Icon(
                       Icons.location_city,
@@ -90,27 +100,31 @@ class _LocationScreenState extends State<LocationScreen> {
                   ),
                 ],
               ),
-              Padding(
-                padding: EdgeInsets.only(left: 15.0),
-                child: Row(
-                  children: <Widget>[
-                    Text(
-                      '$temp°',
-                      style: kTempTextStyle,
-                    ),
-                    Text(
-                      '$weatherIcon️',
-                      style: kConditionTextStyle,
-                    ),
-                  ],
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 15.0),
+                  child: Row(
+                    children: <Widget>[
+                      Text(
+                        '$temp°',
+                        style: kTempTextStyle,
+                      ),
+                      Text(
+                        '$weatherIcon️',
+                        style: kConditionTextStyle,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(right: 15.0),
-                child: Text(
-                  '$weatherText in $Cityname!',
-                  textAlign: TextAlign.right,
-                  style: kMessageTextStyle,
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(right: 15.0),
+                  child: Text(
+                    '$weatherText in $Cityname!',
+                    textAlign: TextAlign.right,
+                    style: kMessageTextStyle,
+                  ),
                 ),
               ),
             ],
