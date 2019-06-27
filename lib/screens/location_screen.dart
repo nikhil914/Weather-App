@@ -35,6 +35,7 @@ class _LocationScreenState extends State<LocationScreen> {
 
       var condition = weatherData['weather'][0]['id'];
       temp = weatherData['main']['temp'];
+
       Cityname = weatherData['name'];
       weatherIcon = weather.getWeatherIcon(condition);
       weatherText = weather.getMessage(temp);
@@ -86,8 +87,7 @@ class _LocationScreenState extends State<LocationScreen> {
                           },
                         ),
                       );
-                      print('Abc');
-                      print(typedname);
+
                       if (typedname != null) {
                         var weatherdata = await weather.cityweather(typedname);
                         updateUI(weatherdata);
@@ -103,15 +103,15 @@ class _LocationScreenState extends State<LocationScreen> {
               Expanded(
                 child: Padding(
                   padding: EdgeInsets.only(left: 15.0),
-                  child: Row(
+                  child: Column(
                     children: <Widget>[
-                      Text(
-                        '$temp°',
-                        style: kTempTextStyle,
-                      ),
                       Text(
                         '$weatherIcon️',
                         style: kConditionTextStyle,
+                      ),
+                      Text(
+                        '$temp°',
+                        style: kTempTextStyle,
                       ),
                     ],
                   ),
