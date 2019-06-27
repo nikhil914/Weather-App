@@ -12,7 +12,7 @@ class LocationScreen extends StatefulWidget {
 
 class _LocationScreenState extends State<LocationScreen> {
   WeatherModel weather = WeatherModel();
-  var temp;
+  var temperature;
   var Cityname;
   var weatherIcon;
   String weatherText;
@@ -26,7 +26,7 @@ class _LocationScreenState extends State<LocationScreen> {
   void updateUI(dynamic weatherData) {
     setState(() {
       if (weatherData == null) {
-        temp = 0;
+        temperature = 0;
         weatherIcon = "Error";
         weatherText = "Unable to get Weather data,Allow permission";
         Cityname = "";
@@ -34,11 +34,11 @@ class _LocationScreenState extends State<LocationScreen> {
       }
 
       var condition = weatherData['weather'][0]['id'];
-      temp = weatherData['main']['temp'];
-
+      double temp = double.parse(weatherData['main']['temp'].toString());
+      temperature = temp.toInt();
       Cityname = weatherData['name'];
       weatherIcon = weather.getWeatherIcon(condition);
-      weatherText = weather.getMessage(temp);
+      weatherText = weather.getMessage(temperature);
       print(temp);
       print(condition);
       print(weatherText);
@@ -103,14 +103,14 @@ class _LocationScreenState extends State<LocationScreen> {
               Expanded(
                 child: Padding(
                   padding: EdgeInsets.only(left: 15.0),
-                  child: Column(
+                  child: Row(
                     children: <Widget>[
                       Text(
                         '$weatherIcon️',
                         style: kConditionTextStyle,
                       ),
                       Text(
-                        '$temp°',
+                        '$temperature°',
                         style: kTempTextStyle,
                       ),
                     ],
