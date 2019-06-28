@@ -3,9 +3,11 @@ import 'package:clima/utilities/constants.dart';
 import 'package:clima/services/weather.dart';
 import 'city_screen.dart';
 
+
 class LocationScreen extends StatefulWidget {
-  LocationScreen({this.locationweather});
+  LocationScreen({this.locationweather, this.locationForcast});
   final locationweather;
+  final locationForcast;
   @override
   _LocationScreenState createState() => _LocationScreenState();
 }
@@ -16,16 +18,18 @@ class _LocationScreenState extends State<LocationScreen> {
   var Cityname;
   var weatherIcon;
   String weatherText;
+  int cmax, cmin, tmax, tmin;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    updateUI(widget.locationweather);
+    updateUI(widget.locationweather, widget.locationForcast);
   }
 
-  void updateUI(dynamic weatherData) {
+  void updateUI(dynamic weatherData, dynamic weatherForcast) {
     setState(() {
-      if (weatherData == null) {
+      if (weatherData == null || weatherForcast == null) {
         temperature = 0;
         weatherIcon = "Error";
         weatherText = "Unable to get Weather data,Allow permission";
@@ -33,15 +37,37 @@ class _LocationScreenState extends State<LocationScreen> {
         return;
       }
 
-      var condition = weatherData['weather'][0]['id'];
       double temp = double.parse(weatherData['main']['temp'].toString());
       temperature = temp.toInt();
       Cityname = weatherData['name'];
+      var condition = weatherData['weather'][0]['id'];
       weatherIcon = weather.getWeatherIcon(condition);
       weatherText = weather.getMessage(temperature);
-      print(temp);
-      print(condition);
-      print(weatherText);
+
+      //Today
+
+      List clist = List();
+      for (int i = 0; i < 7; i++) {
+        double c1max =
+            double.parse(weatherForcast['list'][i]['main']['temp'].toString());
+        int cmaxl = c1max.toInt();
+        clist.add(cmaxl);
+      }
+      clist.sort();
+      cmax = clist[6]; //max
+      cmin = clist[0]; //min
+
+      //Tomorrow
+      List tlist = List();
+      for (int j = 7; j < 15; j++) {
+        double t1max =
+            double.parse(weatherForcast['list'][j]['main']['temp'].toString());
+        int tmax1 = t1max.toInt();
+        tlist.add(tmax1);
+      }
+      tlist.sort();
+      tmax = tlist[7]; //max
+      tmin = tlist[0]; //min
     });
   }
 
@@ -69,7 +95,8 @@ class _LocationScreenState extends State<LocationScreen> {
                   FlatButton(
                     onPressed: () async {
                       var weatherdata = await weather.getlocationweather();
-                      updateUI(weatherdata);
+                      var weatherForcast = await weather.getlocationForcast();
+                      updateUI(weatherdata, weatherForcast);
                       print('Clicked at updater current Location');
                     },
                     child: Icon(
@@ -90,7 +117,9 @@ class _LocationScreenState extends State<LocationScreen> {
 
                       if (typedname != null) {
                         var weatherdata = await weather.cityweather(typedname);
-                        updateUI(weatherdata);
+                        var weatherForcast =
+                            await weather.cityForcast(typedname);
+                        updateUI(weatherdata, weatherForcast);
                       }
                     },
                     child: Icon(
@@ -126,6 +155,71 @@ class _LocationScreenState extends State<LocationScreen> {
                     style: kMessageTextStyle,
                   ),
                 ),
+              ),
+              Container(
+                height: 10.0,
+                width: double.infinity,
+                color: Colors.black,
+                margin: const EdgeInsets.only(left: 10.0, right: 10.0),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Container(
+                    height: 110.0,
+                    width: 10.0,
+                    color: Colors.black,
+                    margin: const EdgeInsets.only(left: 10.0, right: 10.0),
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          'आज ',
+                          style: kdayTextStyle,
+                        ),
+                        Text(
+                          'Max :$cmax°',
+                          style: kmaxmintextstyle,
+                        ),
+                        Text(
+                          'Min :$cmin°',
+                          style: kmaxmintextstyle,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 110.0,
+                    width: 10.0,
+                    color: Colors.black,
+                    margin: const EdgeInsets.only(left: 10.0, right: 10.0),
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          'कल ',
+                          style: kdayTextStyle,
+                        ),
+                        Text(
+                          'Max :$tmax°',
+                          style: kmaxmintextstyle,
+                        ),
+                        Text(
+                          'Min :$tmin°',
+                          style: kmaxmintextstyle,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 110.0,
+                    width: 10.0,
+                    color: Colors.black,
+                    margin: const EdgeInsets.only(left: 10.0, right: 10.0),
+                  ),
+                ],
               ),
             ],
           ),

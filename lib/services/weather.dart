@@ -12,15 +12,30 @@ class WeatherModel {
     return weatherData;
   }
 
-  Future<dynamic> getlocationweather() async {
-    Location loc = Location();
-    await loc.getCurrentLocation();
-
+  Future<dynamic> cityForcast(String cityname) async {
     NetworkHelper networkhelper = NetworkHelper(
-        'https://api.openweathermap.org/data/2.5/weather?lat=${loc.latitude}&lon=${loc.longitude}&appid=$Apikey&units=metric');
+        'https://api.openweathermap.org/data/2.5/forecast?q=$cityname&appid=$Apikey&units=metric');
 
     var weatherData = await networkhelper.getData();
     return weatherData;
+  }
+
+  Future<dynamic> getlocationweather() async {
+    Location loc = Location();
+    await loc.getCurrentLocation();
+    NetworkHelper networkhelper = NetworkHelper(
+        'https://api.openweathermap.org/data/2.5/weather?lat=${loc.latitude}&lon=${loc.longitude}&appid=$Apikey&units=metric');
+    var weatherData = await networkhelper.getData();
+    return weatherData;
+  }
+
+  Future<dynamic> getlocationForcast() async {
+    Location loc = Location();
+    await loc.getCurrentLocation();
+    NetworkHelper networkhelper = NetworkHelper(
+        'https://api.openweathermap.org/data/2.5/forecast?lat=${loc.latitude}&lon=${loc.longitude}&appid=$Apikey&units=metric');
+    var ForcastData = await networkhelper.getData();
+    return ForcastData;
   }
 
   String getWeatherIcon(int condition) {

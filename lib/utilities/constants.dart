@@ -4,6 +4,13 @@ const kTempTextStyle = TextStyle(
   fontFamily: 'Spartan MB',
   fontSize: 90.0,
 );
+const kdayTextStyle = TextStyle(
+  fontWeight: FontWeight.bold,
+  fontSize: 30,
+);
+const kmaxmintextstyle = TextStyle(
+  fontSize: 20,
+);
 
 const kMessageTextStyle = TextStyle(
   fontFamily: 'Spartan MB',
