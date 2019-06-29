@@ -33,10 +33,32 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SpinKitHourGlass(
-          color: Colors.white,
-          size: 100.0,
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              height: 30,
+            ),
+            Expanded(
+              flex: 1,
+              child: Text(
+                'Getting your Location',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 25,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Center(
+                child: SpinKitHourGlass(
+                  color: Colors.white,
+                  size: 100.0,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
